@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 
 import turtle
+import math
 """Make a MII"""
 class MII:
 
@@ -186,27 +187,151 @@ class Boy(MII):
             "(Boy.BoyBodyFeatures) -> str)"
             return "BoyBodyFeatures" + super().__repr__()
 
-        def draw(self): 
-            h = self.height*2
-            w = self.width
+        def draw(self):
+            
+            h = int(self.height)
+            w = int(self.width)
             c = self.colours
-            s = self.shoeSize
+            s = int(self.shoeSize)
             x = 0
             y = 200
 
             t = turtle.Turtle()
             t.penup()
-
+            t.speed(20)
+            t.color('white')
+            t.pensize(1000)
+            t.forward(1)
+            t.backward(1)
+            t.pensize(1)
+            t.color('black')
             t.goto(x,y)
 
             t.pendown()
 
-            self.drawBody(t, s)
+            self.drawBody(t, s, h, w, c)
+            self.drawFace(t, s, h, w, c)
 
-        def drawBody(self, t, s):
+        def drawBody(self, t, s, h, w, c):
+            t.color(c['face'])
+            t.begin_fill()
             t.circle(s*2)
+            t.end_fill()
+
+            t.pensize(3)
+            t.color(c['torso'])
+            t.begin_fill()
+            t.forward(w//2)
+            t.right(90)
+            t.forward(h)
+            t.right(90)
+            t.forward(w)
+            t.right(90)
+            t.forward(h)
+            t.right(90)
+            t.forward(w//2)
+            t.end_fill()
+
+            t.color(c['face'])
+            t.penup()
+            t.forward(w//2)
+            t.pendown()
+            t.right(90-math.degrees(math.atan((w/3)/h)))
+            t.forward(h)
+            t.backward(h)
+            t.penup()
+            t.right(math.degrees(math.atan((w/3)/h)))
+            t.forward(h)
+            t.pendown()
+            t.forward(h)
+            t.left(90)
+            t.color(c['shoe colour'])
+            t.begin_fill()
+            t.forward(s*2)
+            t.right(90)
+            t.forward(s)
+            t.right(90)
+            t.forward(s*2)
+            t.right(90)
+            t.forward(s)
+            t.right(180)
+            t.end_fill()
+            t.color(c['face'])
+
+            t.backward(h)
+            t.penup()
+            t.right(90)
+            t.forward(w)
+            t.pendown()
+            t.left(90)
+            t.forward(h)
+            t.right(90)
+            t.color(c['shoe colour'])
+            t.begin_fill()
+            t.forward(s*2)
+            t.left(90)
+            t.forward(s)
+            t.left(90)
+            t.forward(s*2)
+            t.left(90)
+            t.forward(s)
+            t.left(180)
+            t.end_fill()
+            t.color(c['face'])
+            t.backward(h)
+
+            t.penup()
+            t.right(180)
+            t.forward(h)
+            t.right(180)
+            t.right(math.degrees(math.atan((w/3)/h)))
+            t.pendown()
+            t.forward(h)
+            t.backward(h)
+            t.left(math.degrees(math.atan((w/3)/h)))
+            t.left(90)
+            t.penup()
+            t.forward(w//2)
+            t.pensize(1)
+
+        def drawFace(self, t, s, h, w, c):
+            t.color('black')
+            t.left(90)
+            t.forward(s//2)
+            t.right(90)
+            t.pendown()
+            t.circle(int(s*1.4), 65)
+            t.circle(int(s*1.4), -130)
+            t.circle(int(s*1.4), 65)
+            t.penup()
+
+            #eyes
+            t.left(90)
+            t.color(c['eye'])
+            t.forward(s+s//2+s//4)
+            t.right(90)
+            t.forward(s//2+s//4)
+            t.pendown()
+            t.begin_fill()
+            t.circle(s//4)
+            t.end_fill()
+            t.penup()
+            t.backward(s+s//2)
+            t.pendown()
+            t.begin_fill()
+            t.circle(s//4)
+            t.end_fill()
+            t.penup()
+            t.forward(s//2+s//4)
+            t.right(90)
+            t.forward(2*s+s//4)
+            t.left(90)
 #class other
 
-b = Boy(0,  1)
-b.BoyBodyFeatures.setBodyFeatures({}, 180, 200, 26)
+b = Boy(0, 1)
+b.BoyBodyFeatures.setBodyFeatures({'face' : 'orange', 'torso' : 'red', 'eye' : 'blue', 'shoe colour' : 'green'}, 180, 100, 26)
+n = Boy(0, 1)
+n.BoyBodyFeatures.setBodyFeatures({'face' : 'green', 'torso' : 'red', 'eye' : 'blue', 'shoe colour' : 'green'}, 160, 100, 26)
+
+
 
